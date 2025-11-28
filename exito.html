@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Mensaje Enviado! | JaibaStrategy</title>
+    <style>
+        :root { --jaiba-blue: #00A8E8; --deep-ocean: #003459; --white: #ffffff; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--deep-ocean);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .success-card {
+            background: var(--white);
+            color: var(--deep-ocean);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 500px;
+            margin: 20px;
+        }
+        h1 { color: var(--jaiba-blue); margin-bottom: 10px; }
+        p { margin-bottom: 30px; font-size: 1.1rem; }
+        .btn {
+            background-color: var(--jaiba-blue);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn:hover { background-color: #0077a6; }
+        .icon { font-size: 4rem; display: block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <span class="icon">✅</span>
+        <h1>¡Recibido!</h1>
+        <p>Gracias por contactar a JaibaStrategy. Hemos recibido tu solicitud y te contactaremos muy pronto.</p>
+        <a href="index.html" class="btn">Volver al Inicio</a>
+    </div>
+</body>
+</html>
