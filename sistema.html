@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JaibaManager | Control de Inventario</title>
+    <style>
+        /* --- ESTILOS IGUALES A TU MARCA --- */
+        :root {
+            --jaiba-blue: #00A8E8; 
+            --deep-ocean: #003459; 
+            --white: #ffffff;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --light: #f1f5f9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { background-color: var(--light); color: var(--deep-ocean); }
+
+        /* HEADER */
+        header {
+            background-color: var(--white);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; }
+        .brand img { height: 40px; }
+        .brand span { color: var(--jaiba-blue); }
+
+        .user-panel { display: flex; gap: 20px; align-items: center; }
+        .btn-logout { text-decoration: none; color: var(--danger); font-weight: bold; font-size: 0.9rem; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .dashboard {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Columna formulario pequeña, tabla grande */
+            gap: 30px;
+        }
+
+        /* TARJETA FORMULARIO */
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        h2 { margin-bottom: 20px; color: var(--deep-ocean); font-size: 1.2rem; border-bottom: 2px solid var(--light); padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus { border-color: var(--jaiba-blue); }
+
+        .btn-save {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--jaiba-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-save:hover { background-color: var(--deep-ocean); }
+
+        /* TABLA DE DATOS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th { text-align: left; padding: 12px; color: var(--text-grey); font-size: 0.85rem; text-transform: uppercase; border-bottom: 2px solid var(--light); }
+        td { padding: 15px 12px; border-bottom: 1px solid var(--light); vertical-align: middle; }
+        
+        .stock-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .in-stock { background-color: #dcfce7; color: var(--success); }
+        .low-stock { background-color: #fee2e2; color: var(--danger); }
+
+        /* BOTONES DE ACCION */
+        .actions { display: flex; gap: 10px; }
+        .btn-icon {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+        .btn-edit:hover { transform: scale(1.2); }
+        .btn-delete:hover { transform: scale(1.2); }
+
+        @media (max-width: 768px) {
+            .dashboard { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <img src="logo.png" alt="Logo">
+            Jaiba<span>Manager</span>
+        </div>
+        <div class="user-panel">
+            <span>👤 Admin</span>
+            <a href="index.html" class="btn-logout">Salir al Inicio</a>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        
+        <div class="card">
+            <h2>📦 Agregar Producto</h2>
+            <form id="product-form">
+                <input type="hidden" id="product-index"> <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="nombre" placeholder="Ej. Filete de Pescado" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Precio (USD)</label>
+                    <input type="number" id="precio" placeholder="0.00" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Stock (Unidades)</label>
+                    <input type="number" id="stock" placeholder="0" required>
+                </div>
+
+                <button type="submit" class="btn-save" id="btn-action">Guardar Producto</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Inventario Actual</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-list">
+                    </tbody>
+            </table>
+            <div id="empty-msg" style="text-align: center; padding: 20px; opacity: 0.6;">
+                No hay productos registrados.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. Variables Globales
+        let products = [];
+        const form = document.getElementById('product-form');
+        const list = document.getElementById('inventory-list');
+        const emptyMsg = document.getElementById('empty-msg');
+        const btnAction = document.getElementById('btn-action');
+        let editIndex = -1; // -1 significa que estamos creando uno nuevo
+
+        // 2. Cargar datos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedData = localStorage.getItem('jaiba_inventory');
+            if(storedData) {
+                products = JSON.parse(storedData);
+            }
+            renderTable();
+        });
+
+        // 3. Función Guardar (CREATE / UPDATE)
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evita que se recargue la página
+
+            const newProduct = {
+                nombre: document.getElementById('nombre').value,
+                precio: parseFloat(document.getElementById('precio').value),
+                stock: parseInt(document.getElementById('stock').value)
+            };
+
+            if(editIndex === -1) {
+                // MODO CREAR
+                products.push(newProduct);
+            } else {
+                // MODO ACTUALIZAR
+                products[editIndex] = newProduct;
+                editIndex = -1; // Resetear modo
+                btnAction.innerText = "Guardar Producto";
+                btnAction.style.backgroundColor = "var(--jaiba-blue)";
+                document.querySelector('.card h2').innerText = "📦 Agregar Producto";
+            }
+
+            saveToLocal();
+            renderTable();
+            form.reset();
+        });
+
+        // 4. Función Renderizar (READ)
+        function renderTable() {
+            list.innerHTML = ''; // Limpiar tabla
+
+            if(products.length === 0) {
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+
+            products.forEach((prod, index) => {
+                // Lógica de Stock (Rojo si hay menos de 5)
+                const stockClass = prod.stock < 5 ? 'low-stock' : 'in-stock';
+                const stockText = prod.stock < 5 ? '⚠️ Bajo Stock (' + prod.stock + ')' : '✅ En Stock (' + prod.stock + ')';
+
+                const row = `
+                    <tr>
+                        <td style="font-weight:bold;">${prod.nombre}</td>
+                        <td>$${prod.precio.toFixed(2)}</td>
+                        <td><span class="stock-badge ${stockClass}">${stockText}</span></td>
+                        <td class="actions">
+                            <button onclick="editProduct(${index})" class="btn-icon btn-edit" title="Editar">✏️</button>
+                            <button onclick="deleteProduct(${index})" class="btn-icon btn-delete" title="Eliminar">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+                list.innerHTML += row;
+            });
+        }
+
+        // 5. Función Eliminar (DELETE)
+        window.deleteProduct = (index) => {
+            if(confirm('¿Seguro que quieres borrar este ingrediente?')) {
+                products.splice(index, 1);
+                saveToLocal();
+                renderTable();
+            }
+        }
+
+        // 6. Función Editar (PREPARAR UPDATE)
+        window.editProduct = (index) => {
+            const prod = products[index];
+            document.getElementById('nombre').value = prod.nombre;
+            document.getElementById('precio').value = prod.precio;
+            document.getElementById('stock').value = prod.stock;
+            
+            editIndex = index;
+            btnAction.innerText = "Actualizar Cambios";
+            btnAction.style.backgroundColor = "var(--warning)";
+            document.querySelector('.card h2').innerText = "✏️ Editando: " + prod.nombre;
+        }
+
+        // 7. Guardar en navegador
+        function saveToLocal() {
+            localStorage.setItem('jaiba_inventory', JSON.stringify(products));
+        }
+    </script>
+</body>
+</html>
