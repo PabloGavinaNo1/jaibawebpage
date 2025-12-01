@@ -29,6 +29,13 @@ Alumno que lo Desarrollo Gaviña Landeros Pablo Antonio
         }
         .btn-primary:hover { background-color: var(--deep-ocean); transform: translateY(-2px); }
 
+        /* Botón Secundario (Nuevo para Login) */
+        .btn-outline {
+            border: 2px solid var(--jaiba-blue); color: var(--jaiba-blue); padding: 10px 25px;
+            border-radius: 50px; font-weight: 700; display: inline-block; margin-left: 10px;
+        }
+        .btn-outline:hover { background-color: var(--jaiba-blue); color: var(--white); }
+
         /* --- 3. ENCABEZADO --- */
         header {
             background-color: var(--white); height: 80px; display: flex; align-items: center;
@@ -41,7 +48,7 @@ Alumno que lo Desarrollo Gaviña Landeros Pablo Antonio
         .logo img { height: 50px; margin-right: 10px; display: block; }
         .logo span { color: var(--jaiba-blue); }
 
-        .nav-links { display: flex; gap: 30px; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { font-weight: 500; color: var(--deep-ocean); }
         .nav-links a:hover { color: var(--jaiba-blue); }
 
@@ -100,10 +107,10 @@ Alumno que lo Desarrollo Gaviña Landeros Pablo Antonio
             <nav>
                 <ul class="nav-links">
                     <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#caracteristicas">Software</a></li>
                     <li><a href="#servicios">Servicios</a></li>
                     <li><a href="#calculadora">Precios</a></li>
-                    <li><a href="#contacto" class="btn-primary" style="padding: 8px 20px;">Contacto</a></li>
+                    <li><a href="sistema.html" class="btn-outline">Ver Demo App</a></li>
+                    <li><a href="#contacto" class="btn-primary" style="padding: 10px 20px;">Contacto</a></li>
                 </ul>
             </nav>
         </div>
@@ -113,7 +120,10 @@ Alumno que lo Desarrollo Gaviña Landeros Pablo Antonio
         <div class="container">
             <h1>Software Fresco para<br>Restaurantes Modernos</h1>
             <p>Controla comandas, inventarios y entregas con la fluidez del océano.</p>
-            <a href="#servicios" class="btn-primary">Ver Servicios</a>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <a href="#servicios" class="btn-primary">Ver Servicios</a>
+                <a href="sistema.html" class="btn-outline">Probar Sistema</a>
+            </div>
         </div>
     </section>
 
