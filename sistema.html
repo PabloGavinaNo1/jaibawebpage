@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JaibaManager | Control de Inventario</title>
+    <title>JaibaManager | Sistema Integral</title>
     <style>
-        /* --- ESTILOS IGUALES A TU MARCA --- */
+        /* --- ESTILOS VISUALES --- */
         :root {
             --jaiba-blue: #00A8E8; 
             --deep-ocean: #003459; 
@@ -17,106 +17,65 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        
-        body { background-color: var(--light); color: var(--deep-ocean); }
+        body { background-color: var(--light); color: var(--deep-ocean); padding-bottom: 50px; }
 
         /* HEADER */
         header {
-            background-color: var(--white);
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background-color: var(--white); padding: 15px 40px; display: flex;
+            justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 100;
         }
-
         .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; }
         .brand img { height: 40px; }
         .brand span { color: var(--jaiba-blue); }
+        .btn-logout { text-decoration: none; color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 5px 15px; border-radius: 20px; transition: 0.3s; }
+        .btn-logout:hover { background: var(--danger); color: white; }
 
-        .user-panel { display: flex; gap: 20px; align-items: center; }
-        .btn-logout { text-decoration: none; color: var(--danger); font-weight: bold; font-size: 0.9rem; }
-
-        /* CONTENEDOR PRINCIPAL */
+        /* LAYOUT DASHBOARD */
         .dashboard {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 2fr; /* Columna formulario pequeña, tabla grande */
-            gap: 30px;
+            max-width: 1200px; margin: 30px auto; padding: 0 20px;
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* Dividido en 2 columnas */
+            gap: 25px;
         }
 
-        /* TARJETA FORMULARIO */
-        .card {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            height: fit-content;
-        }
+        /* CARD GENERAL */
+        .card { background: var(--white); padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h2 { margin-bottom: 20px; color: var(--deep-ocean); font-size: 1.2rem; border-bottom: 2px solid var(--light); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
-        h2 { margin-bottom: 20px; color: var(--deep-ocean); font-size: 1.2rem; border-bottom: 2px solid var(--light); padding-bottom: 10px; }
-
+        /* FORMULARIOS */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; background: #fff; }
+        input:focus, select:focus { border-color: var(--jaiba-blue); }
+
+        /* BOTONES */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-primary { background-color: var(--jaiba-blue); color: white; }
+        .btn-primary:hover { background-color: var(--deep-ocean); }
+        .btn-success { background-color: var(--success); color: white; font-size: 1.1rem; }
+        .btn-success:hover { background-color: #16a34a; }
+        .btn-add-cart { background-color: var(--deep-ocean); color: white; margin-top: 10px; }
+
+        /* TABLAS */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th { text-align: left; padding: 10px; color: var(--text-grey); border-bottom: 2px solid var(--light); }
+        td { padding: 10px; border-bottom: 1px solid var(--light); }
         
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-        }
-        input:focus { border-color: var(--jaiba-blue); }
-
-        .btn-save {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--jaiba-blue);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn-save:hover { background-color: var(--deep-ocean); }
-
-        /* TABLA DE DATOS */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th { text-align: left; padding: 12px; color: var(--text-grey); font-size: 0.85rem; text-transform: uppercase; border-bottom: 2px solid var(--light); }
-        td { padding: 15px 12px; border-bottom: 1px solid var(--light); vertical-align: middle; }
-        
-        .stock-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+        /* STOCK BADGES */
+        .stock-badge { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
         .in-stock { background-color: #dcfce7; color: var(--success); }
         .low-stock { background-color: #fee2e2; color: var(--danger); }
 
-        /* BOTONES DE ACCION */
-        .actions { display: flex; gap: 10px; }
-        .btn-icon {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.2s;
-        }
-        .btn-edit:hover { transform: scale(1.2); }
-        .btn-delete:hover { transform: scale(1.2); }
+        /* POS SECTION SPECIFIC */
+        .pos-area { grid-column: 1 / -1; } /* POS ocupa todo el ancho arriba */
+        .cart-total { text-align: right; font-size: 1.5rem; font-weight: 800; margin: 20px 0; color: var(--deep-ocean); }
 
-        @media (max-width: 768px) {
-            .dashboard { grid-template-columns: 1fr; }
-        }
+        /* ACCIONES */
+        .actions button { border: none; background: none; cursor: pointer; font-size: 1.1rem; margin-right: 5px; transition: 0.2s; }
+        .actions button:hover { transform: scale(1.2); }
+
+        @media (max-width: 768px) { .dashboard { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -126,156 +85,251 @@
             <img src="logo.png" alt="Logo">
             Jaiba<span>Manager</span>
         </div>
-        <div class="user-panel">
-            <span>👤 Admin</span>
-            <a href="index.html" class="btn-logout">Salir al Inicio</a>
-        </div>
+        <a href="index.html" class="btn-logout">Cerrar Sesión</a>
     </header>
 
     <div class="dashboard">
         
+        <div class="card pos-area">
+            <h2>🛒 Terminal de Venta <span style="font-size:0.9rem; opacity:0.6;">Modo Cajero</span></h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <div class="form-group">
+                        <label>Seleccionar Producto</label>
+                        <select id="pos-product-select">
+                            <option value="">-- Elige un producto --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" id="pos-qty" value="1" min="1">
+                    </div>
+                    <button class="btn btn-add-cart" onclick="addToCart()">⬇️ Agregar al Carrito</button>
+                </div>
+
+                <div style="background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                    <h3 style="margin-bottom: 10px;">Ticket Actual</h3>
+                    <ul id="cart-list" style="list-style: none; margin-bottom: 15px; max-height: 150px; overflow-y: auto;">
+                        <li style="opacity: 0.6; font-style: italic;">El carrito está vacío...</li>
+                    </ul>
+                    <hr>
+                    <div class="cart-total">Total: $<span id="cart-total-display">0.00</span></div>
+                    <button class="btn btn-success" onclick="processSale()">✅ Cobrar y Descontar Stock</button>
+                </div>
+            </div>
+        </div>
+
         <div class="card">
-            <h2>📦 Agregar Producto</h2>
+            <h2>📦 Gestión de Inventario</h2>
             <form id="product-form">
-                <input type="hidden" id="product-index"> <div class="form-group">
-                    <label>Nombre del Producto</label>
-                    <input type="text" id="nombre" placeholder="Ej. Filete de Pescado" required>
-                </div>
-                
+                <input type="hidden" id="product-index">
                 <div class="form-group">
-                    <label>Precio (USD)</label>
-                    <input type="number" id="precio" placeholder="0.00" step="0.01" required>
+                    <label>Nombre del Platillo/Insumo</label>
+                    <input type="text" id="nombre" placeholder="Ej. Hamburguesa Especial" required>
                 </div>
-
-                <div class="form-group">
-                    <label>Stock (Unidades)</label>
-                    <input type="number" id="stock" placeholder="0" required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label>Precio ($)</label>
+                        <input type="number" id="precio" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Inicial</label>
+                        <input type="number" id="stock" placeholder="0" required>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn-save" id="btn-action">Guardar Producto</button>
+                <button type="submit" class="btn btn-primary" id="btn-action">Guardar en Base de Datos</button>
             </form>
         </div>
 
         <div class="card">
-            <h2>Inventario Actual</h2>
+            <h2>📊 Existencias en Tiempo Real</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>$ Venta</th>
+                        <th>Stock</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="inventory-list">
                     </tbody>
             </table>
-            <div id="empty-msg" style="text-align: center; padding: 20px; opacity: 0.6;">
-                No hay productos registrados.
-            </div>
+            <p id="empty-msg" style="text-align: center; margin-top: 20px; opacity: 0.5;">Inventario vacío.</p>
         </div>
 
     </div>
 
     <script>
-        // 1. Variables Globales
+        // --- 1. DATOS ---
         let products = [];
+        let cart = []; // Carrito temporal
+
+        // Elementos del DOM
         const form = document.getElementById('product-form');
         const list = document.getElementById('inventory-list');
-        const emptyMsg = document.getElementById('empty-msg');
-        const btnAction = document.getElementById('btn-action');
-        let editIndex = -1; // -1 significa que estamos creando uno nuevo
+        const posSelect = document.getElementById('pos-product-select');
+        const cartList = document.getElementById('cart-list');
+        const totalDisplay = document.getElementById('cart-total-display');
+        let editIndex = -1;
 
-        // 2. Cargar datos al iniciar
+        // --- 2. INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
-            const storedData = localStorage.getItem('jaiba_inventory');
-            if(storedData) {
-                products = JSON.parse(storedData);
-            }
-            renderTable();
+            const stored = localStorage.getItem('jaiba_inventory');
+            if(stored) products = JSON.parse(stored);
+            renderAll();
         });
 
-        // 3. Función Guardar (CREATE / UPDATE)
-        form.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evita que se recargue la página
+        // --- 3. FUNCIONES DE RENDERIZADO (ACTUALIZAR PANTALLA) ---
+        function renderAll() {
+            renderTable();
+            updatePosDropdown();
+        }
 
-            const newProduct = {
+        function renderTable() {
+            list.innerHTML = '';
+            if(products.length === 0) {
+                document.getElementById('empty-msg').style.display = 'block';
+            } else {
+                document.getElementById('empty-msg').style.display = 'none';
+                products.forEach((prod, index) => {
+                    const stockClass = prod.stock < 5 ? 'low-stock' : 'in-stock';
+                    const row = `
+                        <tr>
+                            <td><b>${prod.nombre}</b></td>
+                            <td>$${parseFloat(prod.precio).toFixed(2)}</td>
+                            <td><span class="stock-badge ${stockClass}">${prod.stock} un.</span></td>
+                            <td class="actions">
+                                <button onclick="editProduct(${index})">✏️</button>
+                                <button onclick="deleteProduct(${index})">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                    list.innerHTML += row;
+                });
+            }
+        }
+
+        function updatePosDropdown() {
+            posSelect.innerHTML = '<option value="">-- Elige un producto --</option>';
+            products.forEach((prod, index) => {
+                // Solo mostramos si hay stock > 0
+                if(prod.stock > 0) {
+                    posSelect.innerHTML += `<option value="${index}">${prod.nombre} - $${prod.precio} (Disp: ${prod.stock})</option>`;
+                }
+            });
+        }
+
+        // --- 4. GESTIÓN DE PRODUCTOS (CRUD) ---
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newProd = {
                 nombre: document.getElementById('nombre').value,
                 precio: parseFloat(document.getElementById('precio').value),
                 stock: parseInt(document.getElementById('stock').value)
             };
 
-            if(editIndex === -1) {
-                // MODO CREAR
-                products.push(newProduct);
-            } else {
-                // MODO ACTUALIZAR
-                products[editIndex] = newProduct;
-                editIndex = -1; // Resetear modo
-                btnAction.innerText = "Guardar Producto";
-                btnAction.style.backgroundColor = "var(--jaiba-blue)";
-                document.querySelector('.card h2').innerText = "📦 Agregar Producto";
+            if(editIndex === -1) products.push(newProd);
+            else {
+                products[editIndex] = newProd;
+                editIndex = -1;
+                document.getElementById('btn-action').innerText = "Guardar en Base de Datos";
+                document.getElementById('btn-action').classList.remove('btn-success');
+                document.getElementById('btn-action').classList.add('btn-primary');
             }
 
-            saveToLocal();
-            renderTable();
+            saveLocal();
+            renderAll();
             form.reset();
         });
 
-        // 4. Función Renderizar (READ)
-        function renderTable() {
-            list.innerHTML = ''; // Limpiar tabla
-
-            if(products.length === 0) {
-                emptyMsg.style.display = 'block';
-            } else {
-                emptyMsg.style.display = 'none';
-            }
-
-            products.forEach((prod, index) => {
-                // Lógica de Stock (Rojo si hay menos de 5)
-                const stockClass = prod.stock < 5 ? 'low-stock' : 'in-stock';
-                const stockText = prod.stock < 5 ? '⚠️ Bajo Stock (' + prod.stock + ')' : '✅ En Stock (' + prod.stock + ')';
-
-                const row = `
-                    <tr>
-                        <td style="font-weight:bold;">${prod.nombre}</td>
-                        <td>$${prod.precio.toFixed(2)}</td>
-                        <td><span class="stock-badge ${stockClass}">${stockText}</span></td>
-                        <td class="actions">
-                            <button onclick="editProduct(${index})" class="btn-icon btn-edit" title="Editar">✏️</button>
-                            <button onclick="deleteProduct(${index})" class="btn-icon btn-delete" title="Eliminar">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-                list.innerHTML += row;
-            });
-        }
-
-        // 5. Función Eliminar (DELETE)
-        window.deleteProduct = (index) => {
-            if(confirm('¿Seguro que quieres borrar este ingrediente?')) {
-                products.splice(index, 1);
-                saveToLocal();
-                renderTable();
+        window.deleteProduct = (i) => {
+            if(confirm('¿Borrar este producto?')) {
+                products.splice(i, 1);
+                saveLocal();
+                renderAll();
             }
         }
 
-        // 6. Función Editar (PREPARAR UPDATE)
-        window.editProduct = (index) => {
-            const prod = products[index];
-            document.getElementById('nombre').value = prod.nombre;
-            document.getElementById('precio').value = prod.precio;
-            document.getElementById('stock').value = prod.stock;
+        window.editProduct = (i) => {
+            const p = products[i];
+            document.getElementById('nombre').value = p.nombre;
+            document.getElementById('precio').value = p.precio;
+            document.getElementById('stock').value = p.stock;
+            editIndex = i;
+            document.getElementById('btn-action').innerText = "Actualizar Producto";
+        }
+
+        // --- 5. LÓGICA DE PUNTO DE VENTA (POS) ---
+        
+        window.addToCart = () => {
+            const index = posSelect.value;
+            const qty = parseInt(document.getElementById('pos-qty').value);
+
+            if(index === "") { alert("Selecciona un producto"); return; }
             
-            editIndex = index;
-            btnAction.innerText = "Actualizar Cambios";
-            btnAction.style.backgroundColor = "var(--warning)";
-            document.querySelector('.card h2').innerText = "✏️ Editando: " + prod.nombre;
+            const prod = products[index];
+
+            // Validación de Stock
+            if(prod.stock < qty) {
+                alert(`Error: Solo tienes ${prod.stock} unidades de ${prod.nombre}`);
+                return;
+            }
+
+            // Agregar al carrito
+            const subtotal = prod.precio * qty;
+            cart.push({ index: index, name: prod.nombre, qty: qty, price: subtotal });
+            
+            renderCart();
+        };
+
+        function renderCart() {
+            cartList.innerHTML = '';
+            let total = 0;
+            
+            if(cart.length === 0) {
+                cartList.innerHTML = '<li style="opacity: 0.6; font-style: italic;">El carrito está vacío...</li>';
+            } else {
+                cart.forEach((item, i) => {
+                    total += item.price;
+                    cartList.innerHTML += `
+                        <li style="display:flex; justify-content:space-between; margin-bottom:5px; border-bottom:1px dashed #eee;">
+                            <span>${item.qty}x ${item.name}</span>
+                            <b>$${item.price.toFixed(2)}</b>
+                            <span style="cursor:pointer; color:red;" onclick="removeFromCart(${i})">×</span>
+                        </li>
+                    `;
+                });
+            }
+            totalDisplay.innerText = total.toFixed(2);
         }
 
-        // 7. Guardar en navegador
-        function saveToLocal() {
+        window.removeFromCart = (i) => {
+            cart.splice(i, 1);
+            renderCart();
+        }
+
+        window.processSale = () => {
+            if(cart.length === 0) { alert("El carrito está vacío"); return; }
+
+            // DESCONTAR STOCK REAL
+            cart.forEach(item => {
+                // item.index es el índice en el array original de productos
+                products[item.index].stock -= item.qty;
+            });
+
+            // Guardar cambios
+            saveLocal();
+            
+            // Limpiar y Feedback
+            cart = [];
+            renderCart();
+            renderAll(); // Esto actualiza la tabla de inventario visualmente
+            alert("✅ ¡Venta registrada! El inventario ha sido actualizado.");
+        }
+
+        function saveLocal() {
             localStorage.setItem('jaiba_inventory', JSON.stringify(products));
         }
         <footer><p>Solo es un demo de lo que puede pedir</p></footer>
